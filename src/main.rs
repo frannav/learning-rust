@@ -9,20 +9,23 @@ fn main() {
 
     let secret_number: u32 = rand::thread_rng().gen_range(1..=4);
 
-    let mut guess: String = String::new();
+    loop {
+        let mut guess: String = String::new();
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed reading input");
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed reading input");
+        let guess: u32 = guess.trim().parse().expect("Type a number please!");
 
-    let guess: u32 = guess.trim().parse().expect("Type a number please!");
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too low!"),
+            Ordering::Equal => {
+                println!("You win! 🏆");
+                break;
+            }
+            Ordering::Greater => println!("Too high!"),
+        }
 
-    match guess.cmp(&secret_number) {
-        Ordering::Less => println!("Too low!"),
-        Ordering::Equal => println!("You win! 🏆"),
-        Ordering::Greater => println!("Too high!"),
+        println!("- You guessed: {guess}");
     }
-
-    println!("- You guessed: {guess}");
-    println!("_ _ _ _ _ _ _ _ _ _ ");
 }
